@@ -6,7 +6,8 @@
     "declaration": true,
     "strict": true,
     "esModuleInterop": true,
-    "baseUrl": "src"
+    "baseUrl": "src",
+    "jsx": "react"
   },
   "include": [
     "src"

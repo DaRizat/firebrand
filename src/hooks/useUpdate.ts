@@ -1,5 +1,5 @@
 import { useContext, useState } from 'react';
-import { FirebaseContext, FirebaseContextProps } from 'context/Firebase';
+import { FirebaseContext, FirebaseContextProps } from '../context/Firebase';
 import { writeTuple } from 'types';
 
 function useUpdate(reference: string): writeTuple {

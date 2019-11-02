@@ -3,7 +3,7 @@ import firebase from 'firebase/app';
 import { FirebaseContext, FirebaseContextProps } from '../context/Firebase';
 import { readTuple } from '../types';
 
-function useOn(
+function useOnce(
   reference: string,
   event: firebase.database.EventType): readTuple {
   const { database } = useContext<Partial<FirebaseContextProps>>(FirebaseContext);
@@ -15,23 +15,19 @@ function useOn(
   useEffect(() => {
     if (database) {
       setLoading(true);
-      const off = database.ref(reference).on(
-        event,
-        (snap: firebase.database.DataSnapshot) => {
+      const off = database.ref(reference).once(event)
+        .then((snap: firebase.database.DataSnapshot) => {
           setLoading(false);
-          setData(snap && snap.val());
-        },
-        (err: firebase.FirebaseError) => {
+          setData(snap.val());
+        })
+        .catch((err: firebase.FirebaseError) => {
           setLoading(false);
           setError(err.toString());
-        }
-      );
-      return () => off(null);
+        })
     }
   }, [database, reference, event]);
 
   return [data, loading, error];
 }
 
-export default useOn;
-
+export default useOnce;
