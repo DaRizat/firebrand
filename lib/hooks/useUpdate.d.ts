@@ -1,3 +1,3 @@
-import { writeTuple } from 'types';
-declare function useUpdate(reference: string): writeTuple;
+import { WriteTuple } from 'types';
+declare function useUpdate(reference: string): WriteTuple;
 export default useUpdate;

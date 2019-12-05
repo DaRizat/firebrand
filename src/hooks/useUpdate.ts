@@ -1,8 +1,8 @@
 import { useContext, useState } from 'react';
 import { FirebaseContext, FirebaseContextProps } from '../context/Firebase';
-import { writeTuple } from 'types';
+import { WriteTuple } from 'types';
 
-function useUpdate(reference: string): writeTuple {
+function useUpdate(reference: string): WriteTuple {
   const { database } = useContext<Partial<FirebaseContextProps>>(FirebaseContext);
 
   const [loading, setLoading] = useState(false);

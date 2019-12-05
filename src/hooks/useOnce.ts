@@ -1,11 +1,11 @@
 import { useEffect, useState, useContext } from 'react';
 import firebase from 'firebase/app';
 import { FirebaseContext, FirebaseContextProps } from '../context/Firebase';
-import { readTuple } from '../types';
+import { ReadTuple } from '../types';
 
 function useOnce(
   reference: string,
-  event: firebase.database.EventType): readTuple {
+  event: firebase.database.EventType): ReadTuple {
   const { database } = useContext<Partial<FirebaseContextProps>>(FirebaseContext);
 
   const [loading, setLoading] = useState(false);
