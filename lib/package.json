@@ -1,0 +1,46 @@
+{
+  "name": "firebrand",
+  "version": "0.4.1",
+  "private": false,
+  "main": "./index.js",
+  "dependencies": {
+    "@types/babel__core": "^7.1.3",
+    "@types/babel__template": "^7.0.2",
+    "@types/firebase": "^3.2.1",
+    "@types/jest": "24.0.21",
+    "@types/node": "^12.12.3",
+    "@types/react": "^16.9.11",
+    "@types/react-dom": "16.9.3",
+    "lodash": "^4.17.15",
+    "react-scripts": "^3.2.0",
+    "typescript": "3.6.4"
+  },
+  "peerDependencies": {
+    "firebase": "^7.2.2",
+    "react": "^16.11.0",
+    "react-dom": "^16.11.0",
+    "react-scripts": "3.2.0"
+  },
+  "scripts": {
+    "build": "./node_modules/.bin/tsc",
+    "link": "tsc && cp package.json dist && cp readme.md lib && cd lib && npm link"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.148"
+  }
+}
