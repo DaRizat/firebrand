@@ -11,17 +11,17 @@ function useUpdate(collectionPath: string): WriteTuple {
   useEffect(() => {
     if(firestore) {
       let ref:firebase.firestore.CollectionReference = firestore.collection(collectionPath);
-      const f = async (docId: string, data: object) => {
+      setFunc((docId: string, data: object) => {
         setLoading(true);
-        try {
-          await ref.doc(docId).update(data);
-          setLoading(false);
-        } catch (err) {
-          setLoading(false);
-          setError(err.toString());
-        }
-      };
-      setFunc(f);
+        ref.doc(docId).update(data)
+          .then(() => {
+            setLoading(false);
+          })
+          .catch(err => {
+            setError(err.toString());
+            setLoading(false);
+          })
+      });
     }
   }, [collectionPath, firestore]);
   
