@@ -1,30 +1,30 @@
-import { useEffect, useState, useContext } from 'react';
+import { useCallback, useState, useContext } from 'react';
 import { FirebaseContext, FirebaseContextProps } from '../../app/FirebaseContext';
 import { WriteTuple } from '../../types';
 
 function useUpdate(collectionPath: string): WriteTuple {
   const { firestore } = useContext<Partial<FirebaseContextProps>>(FirebaseContext);
   const [loading, setLoading] = useState(false);
-  const [func, setFunc] = useState<((id:string, data:object) => void)|undefined>(undefined);
   const [error, setError] = useState(undefined);
+  const ref = firestore ? firestore.collection(collectionPath) : null;
 
-  useEffect(() => {
-    if(firestore) {
-      let ref:firebase.firestore.CollectionReference = firestore.collection(collectionPath);
-      setFunc(async (docId: string, data: object) => {
-        setLoading(true);
-        try {
+  const updateFn = useCallback((docId: string, data: object) => {
+    const update = async () => {
+      setLoading(true);
+      try {
+        if(ref) {
           await ref.doc(docId).update(data)
           setLoading(false);
-        } catch(err) {
-          setError(err.toString());
-          setLoading(false);
         }
-      });
-    }
-  }, [collectionPath, firestore]);
+      } catch(err) {
+        setError(err.toString());
+        setLoading(false);
+      }
+    };
+    update();
+  }, [ref]);
   
-  return [func, loading, error];
+  return [updateFn, loading, error];
 }
 
 export default useUpdate;
