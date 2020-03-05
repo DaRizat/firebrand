@@ -5,7 +5,7 @@ import { AddTuple } from '../../types';
 function useAdd(collectionPath: string): AddTuple {
   const { firestore } = useContext<Partial<FirebaseContextProps>>(FirebaseContext);
   const [loading, setLoading] = useState(false);
-  const [func, setFunc] = useState(():any => {});
+  const [func, setFunc] = useState<((data:object) => void)|undefined>(undefined);
   const [error, setError] = useState(undefined);
 
   useEffect(() => {

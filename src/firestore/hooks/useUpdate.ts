@@ -5,24 +5,22 @@ import { WriteTuple } from '../../types';
 function useUpdate(collectionPath: string): WriteTuple {
   const { firestore } = useContext<Partial<FirebaseContextProps>>(FirebaseContext);
   const [loading, setLoading] = useState(false);
-  const [func, setFunc] = useState(():any => {});
+  const [func, setFunc] = useState<((id:string, data:object) => void)|undefined>(undefined);
   const [error, setError] = useState(undefined);
 
   useEffect(() => {
     if(firestore) {
       let ref:firebase.firestore.CollectionReference = firestore.collection(collectionPath);
-      const updateFunc = (docId: string, data: object) => {
+      setFunc(async (docId: string, data: object) => {
         setLoading(true);
-        ref.doc(docId).update(data)
-          .then(() => {
-            setLoading(false);
-          })
-          .catch(err => {
-            setError(err.toString());
-            setLoading(false);
-          })
-      };
-      setFunc((id:string, data:object) => updateFunc(id, data));
+        try {
+          await ref.doc(docId).update(data)
+          setLoading(false);
+        } catch(err) {
+          setError(err.toString());
+          setLoading(false);
+        }
+      });
     }
   }, [collectionPath, firestore]);
   

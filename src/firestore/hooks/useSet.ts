@@ -5,7 +5,7 @@ import { WriteTuple } from '../../types';
 function useUpdate(collectionPath: string): WriteTuple {
   const { firestore } = useContext<Partial<FirebaseContextProps>>(FirebaseContext);
   const [loading, setLoading] = useState(false);
-  const [func, setFunc] = useState(():any => {});
+  const [func, setFunc] = useState<((id:string, data:object) => void)|undefined>(undefined);
   const [error, setError] = useState(undefined);
 
   useEffect(() => {
