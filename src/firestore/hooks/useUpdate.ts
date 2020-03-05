@@ -11,7 +11,7 @@ function useUpdate(collectionPath: string): WriteTuple {
   useEffect(() => {
     if(firestore) {
       let ref:firebase.firestore.CollectionReference = firestore.collection(collectionPath);
-      setFunc((docId: string, data: object) => {
+      const updateFunc = (docId: string, data: object) => {
         setLoading(true);
         ref.doc(docId).update(data)
           .then(() => {
@@ -21,7 +21,8 @@ function useUpdate(collectionPath: string): WriteTuple {
             setError(err.toString());
             setLoading(false);
           })
-      });
+      };
+      setFunc((id:string, data:object) => updateFunc(id, data));
     }
   }, [collectionPath, firestore]);
   
