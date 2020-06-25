@@ -14,7 +14,7 @@ function useUpdate(collectionPath: string): WriteTuple {
       setLoading(true);
       try {
         if(ref) {
-          await ref.doc(`${collectionPath}/${docId}`).update(data)
+          await ref.doc(docId).update(data)
           setData('OK');
           setLoading(false);
         }
@@ -24,7 +24,7 @@ function useUpdate(collectionPath: string): WriteTuple {
       }
     };
     update();
-  }, [ref, collectionPath]);
+  }, [ref]);
   
   return [updateFn, { data, loading, error }];
 }
