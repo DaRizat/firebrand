@@ -1,4 +1,3 @@
-import { ReadTuple } from '../../types';
-import { QueryOptions } from '../types';
-declare function useCollection(path: string, opts: QueryOptions): ReadTuple;
+import { ReadResult, QueryOptions } from '../types';
+declare function useCollection(path: string, opts: QueryOptions): ReadResult;
 export default useCollection;

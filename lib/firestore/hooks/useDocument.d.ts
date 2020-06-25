@@ -1,3 +1,3 @@
-import { ReadTuple } from '../../types';
-declare function useDocument(path: string): ReadTuple;
+import { ReadResult } from '../types';
+declare function useDocument(path: string): ReadResult;
 export default useDocument;
