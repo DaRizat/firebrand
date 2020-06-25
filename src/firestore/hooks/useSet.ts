@@ -1,14 +1,14 @@
-import { useEffect, useState, useContext } from 'react';
+import { useCallback, useState, useContext } from 'react';
 import { FirebaseContext, FirebaseContextProps } from '../../app/FirebaseContext';
-import { WriteTuple } from '../../types';
+import { WriteTuple } from '../types';
 
 function useUpdate(collectionPath: string): WriteTuple {
   const { firestore } = useContext<Partial<FirebaseContextProps>>(FirebaseContext);
   const [loading, setLoading] = useState(false);
-  const [func, setFunc] = useState<((id:string, data:object) => void)|undefined>(undefined);
+  const [data, setData] = useState<object | undefined>(undefined);
   const [error, setError] = useState(undefined);
 
-  useEffect(() => {
+  const setFn = useCallback((docId: string, data:object) => {
     if(firestore) {
       let ref:firebase.firestore.CollectionReference = firestore.collection(collectionPath);
       let f = async (docId:string, data:object) => {
@@ -21,12 +21,11 @@ function useUpdate(collectionPath: string): WriteTuple {
           setError(err.toString());
         }
       }
-      setFunc(f);
+      f(docId, data);
     }
   }, [collectionPath, firestore]);
   
-  return [func, loading, error];
+  return [setFn, { data, loading, error }];
 }
 
 export default useUpdate;
-

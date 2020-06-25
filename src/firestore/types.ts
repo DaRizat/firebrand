@@ -9,4 +9,14 @@ export type QueryOptions = {
   orderBy: OrderTuple[],
 };
 
+export type ReadResult = {
+  data:object | string | undefined,
+  loading: boolean,
+  error: string | undefined,
+};
+
+export type WriteTuple = [((id:string, data:object) => void), ReadResult];
+export type LazyTuple = [((id:string, opts:QueryOptions) => void), ReadResult];
+export type AddTuple = [((data:object) => void)|undefined, ReadResult];
+
 export interface DataDict { [key: string]: {} };

@@ -1,14 +1,14 @@
-import { useEffect, useState, useContext } from 'react';
+import { useCallback, useState, useContext } from 'react';
 import { FirebaseContext, FirebaseContextProps } from '../../app/FirebaseContext';
-import { AddTuple } from '../../types';
+import { AddTuple } from '../types';
 
 function useAdd(collectionPath: string): AddTuple {
   const { firestore } = useContext<Partial<FirebaseContextProps>>(FirebaseContext);
   const [loading, setLoading] = useState(false);
-  const [func, setFunc] = useState<((data:object) => void)|undefined>(undefined);
+  const [data, setData] = useState<object | undefined>(undefined);
   const [error, setError] = useState(undefined);
 
-  useEffect(() => {
+  const addFn = useCallback((data:object) => {
     if(firestore) {
       let ref:firebase.firestore.CollectionReference = firestore.collection(collectionPath);
       const f = async (data: object) => {
@@ -21,11 +21,11 @@ function useAdd(collectionPath: string): AddTuple {
           setError(err.toString());
         }
       }
-      setFunc(f);
+      f(data);
    }
   }, [collectionPath, firestore]);
 
-  return [func, loading, error];
+  return [addFn, { data, loading, error }];
 }
 
 export default useAdd;

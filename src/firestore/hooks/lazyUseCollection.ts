@@ -1,16 +1,16 @@
-import { useEffect, useState, useContext } from 'react';
+import { useCallback, useState, useContext } from 'react';
 import { FirebaseContext, FirebaseContextProps } from '../../app/FirebaseContext';
-import { ReadResult, QueryOptions, DataDict } from '../types';
+import { LazyTuple, QueryOptions, DataDict } from '../types';
 
-function useCollection(path: string, opts: QueryOptions): ReadResult {
+function lazyUseCollection(path: string): LazyTuple {
   const { firestore } = useContext<Partial<FirebaseContextProps>>(FirebaseContext);
-  const { where, orderBy, startAt, startAfter, limit } = opts;
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<object | undefined>(undefined);
   const [error, setError] = useState<string | undefined>(undefined);
 
-  useEffect(() => {
+  const get = useCallback((id:string, opts:QueryOptions) => {
     async function fetch() {
+      const { where, orderBy, startAt, startAfter, limit } = opts;
       if (firestore) {
         setLoading(true);
         let ref:firebase.firestore.Query = firestore.collection(path);
@@ -43,9 +43,9 @@ function useCollection(path: string, opts: QueryOptions): ReadResult {
       }
     }
     fetch();
-  }, [where, orderBy, startAt, startAfter, limit, path, firestore])
+  }, [firestore, path]);
 
-  return { data, loading, error };
+  return [get, { data, loading, error }];
 }
 
-export default useCollection;
+export default lazyUseCollection;

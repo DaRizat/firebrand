@@ -1,8 +1,8 @@
 import { useEffect, useState, useContext } from 'react';
 import { FirebaseContext, FirebaseContextProps } from '../../app/FirebaseContext';
-import { ReadTuple } from '../../types';
+import { ReadResult } from '../types';
 
-function useDocument(path: string): ReadTuple {
+function useDocument(path: string): ReadResult {
   const { firestore } = useContext<Partial<FirebaseContextProps>>(FirebaseContext);
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<object | undefined>(undefined);
@@ -26,7 +26,7 @@ function useDocument(path: string): ReadTuple {
     fetch();
   }, [path, firestore])
 
-  return [data, loading, error];
+  return { data, loading, error };
 }
 
 export default useDocument;
