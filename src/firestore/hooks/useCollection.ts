@@ -9,6 +9,16 @@ function useCollection(path: string, opts: QueryOptions): ReadResult {
   const [data, setData] = useState<object | undefined>(undefined);
   const [error, setError] = useState<string | undefined>(undefined);
 
+  const handleSnap = (snap:firebase.firestore.QuerySnapshot) => {
+    const docs:DataDict = {};
+    snap.forEach(doc => {
+      docs[doc.id] = doc.data();
+    })
+    const last = snap.docs[snap.docs.length - 1];
+    setData({ docs, last });
+    setLoading(false);
+  }
+
   useEffect(() => {
     async function fetch() {
       if (firestore) {
@@ -28,14 +38,9 @@ function useCollection(path: string, opts: QueryOptions): ReadResult {
         if(startAt) ref = ref.startAt(startAt);
         if(startAfter) ref = ref.startAfter(startAfter);
         try {
-          const docs:DataDict = {};
           const snap = await ref.get();
-          snap.forEach(doc => {
-            docs[doc.id] = doc.data();
-          })
-          const last = snap.docs[snap.docs.length - 1];
-          setLoading(false);
-          setData({ docs, last });
+          handleSnap(snap)
+          return ref.onSnapshot(handleSnap);
         } catch(err) {
           setLoading(false);
           setError(err.toString());
