@@ -8,7 +8,7 @@ function useLazyCollection(path: string): LazyTuple {
   const [data, setData] = useState<object | undefined>(undefined);
   const [error, setError] = useState<string | undefined>(undefined);
 
-  const get = useCallback((id:string, opts:QueryOptions) => {
+  const get = useCallback((opts:QueryOptions) => {
     async function fetch() {
       const { where, orderBy, startAt, startAfter, limit } = opts;
       if (firestore) {
