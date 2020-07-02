@@ -13,7 +13,7 @@ export declare type ReadResult = {
     error: string | undefined;
 };
 export declare type WriteTuple = [((id: string, data: object) => void), ReadResult];
-export declare type LazyTuple = [((id: string, opts: QueryOptions) => void), ReadResult];
+export declare type LazyTuple = [((opts: QueryOptions) => void), ReadResult];
 export declare type AddTuple = [((data: object) => void) | undefined, ReadResult];
 export interface DataDict {
     [key: string]: {};
