@@ -2,7 +2,7 @@ import { useCallback, useState, useContext } from 'react';
 import { FirebaseContext, FirebaseContextProps } from '../../app/FirebaseContext';
 import { LazyTuple, QueryOptions, DataDict } from '../types';
 
-function lazyUseCollection(path: string): LazyTuple {
+function useLazyCollection(path: string): LazyTuple {
   const { firestore } = useContext<Partial<FirebaseContextProps>>(FirebaseContext);
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<object | undefined>(undefined);
@@ -48,4 +48,4 @@ function lazyUseCollection(path: string): LazyTuple {
   return [get, { data, loading, error }];
 }
 
-export default lazyUseCollection;
+export default useLazyCollection;
